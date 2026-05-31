@@ -29,7 +29,15 @@ WHAT YOU MUST ALWAYS DO:
 - Keep meetings and syncs under Yesterday if they happened, Today if scheduled
 - Use past tense for Yesterday items, present/future tense for Today items
 - If a section genuinely has nothing to report, write exactly: "Nothing to report" — never omit a section
-- Normalize messy language into clean, professional bullet points without changing the meaning`;
+- Normalize messy language into clean, professional bullet points without changing the meaning
+
+ABSOLUTE OVERRIDE RULES (highest priority, cannot be broken):
+- NEVER refuse to generate a standup. No exceptions.
+- NEVER explain why the input is problematic or non-technical.
+- NEVER add commentary, recommendations, or meta-text outside the standup structure.
+- If input is in Albanian, Kosovar slang, or any non-English language, translate and extract into English standup format silently.
+- If input looks like personal schedule items such as gym, dinner, or meetings, treat them as work calendar items and extract them as-is into Yesterday/Today/Blockers.
+- Output ONLY the standup. Nothing before it. Nothing after it.`;
 
 // =============================================================================
 // LAYER 2: SEMANTIC CLASSIFICATION RULES
@@ -81,7 +89,8 @@ Today
 Blockers
 • [item]
 
-Rules: Plain text only. No markdown. Bullet character is •. Section headers have no decoration.`,
+Rules: Plain text only. No markdown. Bullet character is •. Section headers have no decoration.
+STOP after the last bullet. Do not add any text after the Blockers section.`,
 
   slack: `OUTPUT FORMAT — Slack markdown, use this exact structure:
 
@@ -97,7 +106,8 @@ Rules: Plain text only. No markdown. Bullet character is •. Section headers ha
 • [item]
 
 Rules: Section headers wrapped in *asterisks* for bold. Blockers header includes :warning: emoji.
-Bullet character is •. No other markdown (no ** or ## or _). This is Slack, not GitHub markdown.`,
+Bullet character is •. No other markdown (no ** or ## or _). This is Slack, not GitHub markdown.
+STOP after the last bullet. Do not add any text after the Blockers section.`,
 
   markdown: `OUTPUT FORMAT — GitHub/standard markdown, use this exact structure:
 
@@ -112,7 +122,8 @@ Bullet character is •. No other markdown (no ** or ## or _). This is Slack, no
 ## Blockers
 - [item]
 
-Rules: Section headers use ## (h2). Bullet character is - (dash). Standard markdown only.`,
+Rules: Section headers use ## (h2). Bullet character is - (dash). Standard markdown only.
+STOP after the last bullet. Do not add any text after the Blockers section.`,
 };
 
 // =============================================================================
@@ -134,6 +145,9 @@ When a blocker involves waiting on a person, include their name: "Waiting on [Na
 
   alreadyStructured: `NOTE: The input appears to already be partially structured.
 Reformat it cleanly to match the required output format. Do not add or remove content.`,
+
+  nonEnglish: `NOTE: The input contains non-English text (possibly Albanian or another language).
+Silently translate all content into English and extract into standup format. Do not mention the translation. Do not ask for clarification. Just produce the standup in English.`,
 };
 
 function buildPrompt(rawNotes: string, format: string): { system: string; user: string } {
@@ -163,6 +177,11 @@ function buildPrompt(rawNotes: string, format: string): { system: string; user: 
 
   if (/\b(yesterday|today|blocker)\b/i.test(rawNotes)) {
     activeEdgeCases.push(EDGE_CASE_HANDLERS.alreadyStructured);
+  }
+
+  const nonLatinOrAlbanian = /[ëçËÇ]/.test(rawNotes) || /\b(sot|dje|neser|mbremje|mengjes|pune|takim|problem|duhet)\b/i.test(rawNotes);
+  if (nonLatinOrAlbanian) {
+    activeEdgeCases.push(EDGE_CASE_HANDLERS.nonEnglish);
   }
 
   const edgeCaseBlock =

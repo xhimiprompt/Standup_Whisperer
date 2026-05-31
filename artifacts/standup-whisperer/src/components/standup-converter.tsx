@@ -14,6 +14,7 @@ export function StandupConverter() {
   const [output, setOutput] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [isCopiedSlack, setIsCopiedSlack] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -93,6 +94,25 @@ export function StandupConverter() {
     await navigator.clipboard.writeText(output);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
+  };
+
+  const convertToSlack = (text: string): string => {
+    return text
+      .replace(/^#{1,3}\s*(Yesterday)/mi, "*Yesterday*")
+      .replace(/^#{1,3}\s*(Today)/mi, "*Today*")
+      .replace(/^#{1,3}\s*(Blockers)/mi, "*Blockers* :warning:")
+      .replace(/^Yesterday$/mi, "*Yesterday*")
+      .replace(/^Today$/mi, "*Today*")
+      .replace(/^Blockers$/mi, "*Blockers* :warning:")
+      .replace(/^\s*-\s+/gm, "• ");
+  };
+
+  const handleCopySlack = async () => {
+    if (!output) return;
+    const slackText = convertToSlack(output);
+    await navigator.clipboard.writeText(slackText);
+    setIsCopiedSlack(true);
+    setTimeout(() => setIsCopiedSlack(false), 2000);
   };
 
   const renderOutput = () => {
@@ -175,7 +195,11 @@ export function StandupConverter() {
         </div>
         
         {output && !isGenerating && (
-          <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-2">
+            <Button size="sm" variant="secondary" onClick={handleCopySlack} className="font-mono text-xs h-8 border border-border">
+              {isCopiedSlack ? <Check className="w-3.5 h-3.5 mr-2" /> : <Copy className="w-3.5 h-3.5 mr-2" />}
+              {isCopiedSlack ? "COPIED!" : "COPY FOR SLACK"}
+            </Button>
             <Button size="sm" variant="secondary" onClick={handleCopy} className="font-mono text-xs h-8">
               {isCopied ? <Check className="w-3.5 h-3.5 mr-2" /> : <Copy className="w-3.5 h-3.5 mr-2" />}
               {isCopied ? "COPIED" : "COPY"}
