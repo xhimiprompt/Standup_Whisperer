@@ -5,9 +5,6 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-export interface HealthStatus {
-  status: string;
-}
 
 /**
  * Output format for the standup
@@ -20,18 +17,3 @@ export const StandupInputFormat = {
   slack: 'slack',
   markdown: 'markdown',
 } as const;
-
-export interface StandupInput {
-  /**
-     * Raw unformatted standup notes
-     * @minLength 1
-     */
-  notes: string;
-  /** Output format for the standup */
-  format: StandupInputFormat;
-}
-
-export interface ErrorResponse {
-  error: string;
-}
-

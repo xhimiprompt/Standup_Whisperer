@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: standup
+    description: Standup conversion operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /standup/process:
+    post:
+      operationId: processStandup
+      tags: [standup]
+      summary: Convert raw notes into a clean standup (SSE stream)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StandupInput"
+      responses:
+        "200":
+          description: SSE stream of the formatted standup output
+          content:
+            text/event-stream: {}
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +57,24 @@ components:
           type: string
       required:
         - status
-
+    StandupInput:
+      type: object
+      properties:
+        notes:
+          type: string
+          description: Raw unformatted standup notes
+          minLength: 1
+        format:
+          type: string
+          enum: [plain, slack, markdown]
+          description: Output format for the standup
+      required:
+        - notes
+        - format
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
