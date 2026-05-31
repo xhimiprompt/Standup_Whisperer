@@ -415,7 +415,8 @@ module.exports = {
 
 ### Prompt 2 — Fixes and improvements
 
-After testing the initial build, this prompt was used to fix all identified issues:
+After testing the initial build, I sent this prompt to Replit Agent 
+to fix issues discovered during testing:
 
 ```text
 Fix the following issues in the Standup Whisperer app:
