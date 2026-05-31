@@ -65,7 +65,6 @@ This was the original prompt used to create the application from scratch:
 /**
  * =============================================================================
  * STANDUP WHISPERER — prompts.js
- * Prompt Engineering — Full Reverse Engineered Design
  * =============================================================================
  *
  * ARCHITECTURE: 4-layer prompt system
