@@ -24,32 +24,28 @@ Output formats supported: Plain Text, Slack markdown, GitHub markdown.
 
 ## How to run it
 
-### Prerequisites
-- Node.js 24+
-- pnpm (`npm install -g pnpm`)
-- An Anthropic API key
+Option 1 — Live demo (instant)
+No setup needed: https://attached-assets-1--xhimiprompt.replit.app
 
-### Setup
 
-```bash
-git clone https://github.com/xhimiprompt/Standup_Whisperer.git
+This is the recommended way to run locally. The project is built for Replit's Linux environment.
+
+Option 2 — Local clone (Linux x64 only)
+bashgit clone https://github.com/xhimiprompt/Standup_Whisperer.git
 cd Standup_Whisperer
+npm install -g pnpm
 pnpm install
-```
-
-Create a `.env` file in the root:
-
-```
+Create a .env file in the root:
 ANTHROPIC_API_KEY=your_api_key_here
-```
+PORT=5000
+BASE_PATH=/
+Run:
+bashpnpm --filter @workspace/api-server run dev
+Open http://localhost:5000 in your browser.
 
-### Run
+Note: Local setup works on Linux x64 only. The project uses Replit-specific Vite plugins and platform-locked esbuild binaries that are not cross-platform.
 
-```bash
-pnpm --filter @workspace/api-server run dev
-```
 
-Open `http://localhost:5000` in your browser.
 
 ---
 
