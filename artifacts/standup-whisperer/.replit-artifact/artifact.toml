@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Standup Whisperer"
+version = "1.0.0"
+id = "artifacts/standup-whisperer"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25035
+
+[services.development]
+run = "pnpm --filter @workspace/standup-whisperer run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/standup-whisperer", "run", "build" ]
+publicDir = "artifacts/standup-whisperer/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25035"
+BASE_PATH = "/"
