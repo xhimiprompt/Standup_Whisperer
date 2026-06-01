@@ -451,7 +451,7 @@ In buildPrompt(), add this detection block after the existing edge case checks:
   }
 
 
-PROBLEM 5 — Ensure stable public deployment
+PROBLEM 4 — Ensure stable public deployment
 Verify package.json has a valid start script.
 Make sure the server listens on process.env.PORT || 3000.
 ```
