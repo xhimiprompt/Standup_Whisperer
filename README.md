@@ -450,12 +450,6 @@ In buildPrompt(), add this detection block after the existing edge case checks:
     activeEdgeCases.push(EDGE_CASE_HANDLERS.nonEnglish);
   }
 
-PROBLEM 4 — Add Copy-to-Slack button (bonus feature)
-1. Show button labeled 'Copy for Slack' only when output exists.
-2. Convert output to Slack markdown: *Yesterday*, *Today*, *Blockers* :warning:, bullets as •
-3. Copy to clipboard, show 'Copied!' for 2 seconds then revert.
-4. Style to match dark terminal UI: green border (#00ff41), monospace font, transparent bg.
-5. Position near the CLEAR button in the STANDARD_OUT panel.
 
 PROBLEM 5 — Ensure stable public deployment
 Verify package.json has a valid start script.
@@ -658,7 +652,6 @@ The `/api/standup/process` endpoint returns an SSE stream. The client uses raw `
 
 ## Bonus features implemented
 
-- **Copy for Slack button** — converts output to Slack markdown format and copies to clipboard with 2-second "Copied!" confirmation
 - **Real-time streaming** — output appears token by token as Claude generates it
 - **Abort mid-generation** — user can stop generation at any time
 - **Three output formats** — Plain, Slack, Markdown selectable before generation
