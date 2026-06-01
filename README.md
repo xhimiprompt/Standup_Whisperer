@@ -31,7 +31,7 @@ No setup needed: https://attached-assets-1--xhimiprompt.replit.app
 This is the recommended way to run locally. The project is built for Replit's Linux environment.
 
 Option 2 — Local clone (Linux x64 only)
-bashgit clone https://github.com/xhimiprompt/Standup_Whisperer.git
+git clone https://github.com/xhimiprompt/Standup_Whisperer.git
 cd Standup_Whisperer
 npm install -g pnpm
 pnpm install
