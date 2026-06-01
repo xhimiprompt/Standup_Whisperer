@@ -24,24 +24,34 @@ Output formats supported: Plain Text, Slack markdown, GitHub markdown.
 
 ## How to run it
 
-Option 1 — Live demo (instant)
+**Option 1 — Live demo (instant, recommended)**
+
 No setup needed: https://attached-assets-1--xhimiprompt.replit.app
 
+**Option 2 — Local clone (Linux x64 only)**
 
-This is the recommended way to run locally. The project is built for Replit's Linux environment.
+> Note: Local setup works on Linux x64 only. The project uses Replit-specific 
+> Vite plugins and platform-locked esbuild binaries that are not cross-platform.
 
-Option 2 — Local clone (Linux x64 only)
+```bash
 git clone https://github.com/xhimiprompt/Standup_Whisperer.git
 cd Standup_Whisperer
 npm install -g pnpm
 pnpm install
-Create a .env file in the root:
+```
+
+Create a `.env` file in the root:
 ANTHROPIC_API_KEY=your_api_key_here
 PORT=5000
 BASE_PATH=/
+
 Run:
-bashpnpm --filter @workspace/api-server run dev
-Open http://localhost:5000 in your browser.
+
+```bash
+pnpm --filter @workspace/api-server run dev
+```
+
+Open `http://localhost:5000` in your browser.
 
 Note: Local setup works on Linux x64 only. The project uses Replit-specific Vite plugins and platform-locked esbuild binaries that are not cross-platform.
 
